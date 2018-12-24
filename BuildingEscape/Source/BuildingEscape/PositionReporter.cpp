@@ -19,7 +19,8 @@ void UPositionReporter::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	UE_LOG(LogTemp, Warning, TEXT("UPositionReporter Initing!")); // Do some simple logging
+
 }
 
 
