@@ -1,6 +1,7 @@
 // © Celio Reyes 2018
 
 #include "PositionReporter.h"
+#include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
 UPositionReporter::UPositionReporter()
@@ -18,8 +19,8 @@ void UPositionReporter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	UE_LOG(LogTemp, Warning, TEXT("UPositionReporter Initing!")); // Do some simple logging
+	FString ObjectName = GetOwner()->GetName(); // Grab the name of the current GameObject
+	UE_LOG(LogTemp, Warning, TEXT("UPositionReporter Initing for %s!"), *ObjectName);
 
 }
 
