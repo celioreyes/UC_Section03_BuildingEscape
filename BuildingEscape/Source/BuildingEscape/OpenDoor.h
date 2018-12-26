@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/TriggerVolume.h"
+
 #include "OpenDoor.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
+class BUILDINGESCAPE_API UOpenDoor : public UActorComponent 
 {
 	GENERATED_BODY()
 
@@ -16,6 +17,13 @@ public:
 	// Sets default values for this component's properties
 	UOpenDoor();
 
+private:
+	UPROPERTY(EditAnywhere)
+	float OpenAngle = 75.f;
+
+	UPROPERTY(EditAnywhere)
+	ATriggerVolume* PressurePlate;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
