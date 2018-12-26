@@ -18,15 +18,23 @@ public:
 	UOpenDoor();
 
 private:
+	// Will be visible in Unreal Editor
 	UPROPERTY(EditAnywhere)
 	float OpenAngle = 75.f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 	
+	UPROPERTY(EditAnywhere)
+	AActor* TargetActor;
+
+	// Won't be visible in Unreal Editor
+	AActor* Owner;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	void OpenDoor();
 
 public:	
 	// Called every frame
