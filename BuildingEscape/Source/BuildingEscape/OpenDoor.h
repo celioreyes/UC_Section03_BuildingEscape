@@ -20,22 +20,26 @@ public:
 private:
 	// Will be visible in Unreal Editor
 	UPROPERTY(EditAnywhere)
-	float OpenAngle = 75.f;
+	float OpenAngle = -75.f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	AActor* TargetActor;
+
+	UPROPERTY(EditAnywhere)
+	float CloseDelay = 0.5f;
 
 	// Won't be visible in Unreal Editor
 	AActor* Owner;
+	float TimeLastOpen;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	void OpenDoor();
-
+	void CloseDoor();
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
