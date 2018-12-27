@@ -2,6 +2,8 @@
 
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor() {
@@ -17,7 +19,11 @@ UOpenDoor::UOpenDoor() {
 void UOpenDoor::BeginPlay() {
 	Super::BeginPlay();
 	
-	Owner = GetOwner(); // Find owning actor
+	Owner = GetOwner(); // Find owning actor aka the door
+
+	// Assign the target actor when beginplay runs
+	TargetActor = GetWorld()->GetFirstPlayerController()->GetPawn();
+	
 }
 
 void UOpenDoor::OpenDoor() {
