@@ -1,10 +1,10 @@
 // Celio Reyes 2018
 
 #include "Grabber.h"
-#include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
+
 
 #define OUT
+
 // Sets default values for this component's properties
 UGrabber::UGrabber() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
@@ -33,8 +33,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	// Grab the player's viewpoint
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT PLocation, OUT PRotation);
-	UE_LOG(LogTemp, Warning, TEXT("Grabber | Player Location: %s | Player Viewpoint: %s"), *PLocation.ToString(), *PRotation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Grabber | Player Location: %s | Player Viewpoint: %s"), *PLocation.ToString(), *PRotation.ToString());
 
+	FVector  LineTraceEnd = PLocation + PRotation.Vector() * Reach;
+	DrawDebugLine( GetWorld(), PLocation, LineTraceEnd, FColor(0, 255, 0), false, 0.f, 0, 10.f );
+	
 	// Ray-cast to reach distance
 
 	// Check what we hit
