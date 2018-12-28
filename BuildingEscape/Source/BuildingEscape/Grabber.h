@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/World.h"
 #include "Components/ActorComponent.h"
+#include "Components/InputComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
@@ -28,8 +29,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+
 private:
 	float Reach = 100.f;
 
 	UPhysicsHandleComponent* PhysicsHandler = nullptr;
+
+	UInputComponent* Input = nullptr;
+
+	// Ray-Cast and Grab object in reach
+	void Grab();
+
 };

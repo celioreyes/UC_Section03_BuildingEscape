@@ -10,20 +10,26 @@ UGrabber::UGrabber() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
-
 
 // Called when the game starts
 void UGrabber::BeginPlay() {
 	Super::BeginPlay();
 		
 	PhysicsHandler = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-
 	if (PhysicsHandler == nullptr) {
-		// Log error
+		/// Log error
 		UE_LOG(LogTemp, Error, TEXT("%s is missing component: Physics Handle"), *GetOwner()->GetName());
+	}
+
+	Input = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (Input) {
+		UE_LOG(LogTemp, Warning, TEXT("Input Component Found"));
+		/// Bind a method to an Input Action
+		Input->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+	} else {
+		/// Log error
+		UE_LOG(LogTemp, Error, TEXT("%s is missing component: Input Component"), *GetOwner()->GetName());
 	}
 }
 
@@ -47,5 +53,9 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	/// Line trace (Ray-cast) to reach distance
 	FHitResult Hit;
 	GetWorld()->LineTraceSingleByObjectType(OUT Hit, PLocation, LineTraceEnd, FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParams);
+}
+
+void UGrabber::Grab() {
+	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
 }
 
