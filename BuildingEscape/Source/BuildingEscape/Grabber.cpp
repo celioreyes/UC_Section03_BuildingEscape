@@ -18,11 +18,13 @@ UGrabber::UGrabber() {
 // Called when the game starts
 void UGrabber::BeginPlay() {
 	Super::BeginPlay();
+		
+	PhysicsHandler = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 
-	// ...
-	UE_LOG(LogTemp, Warning, TEXT("Grabber | Running in BeginPlay()"));
-
-	
+	if (PhysicsHandler == nullptr) {
+		// Log error
+		UE_LOG(LogTemp, Error, TEXT("%s is missing component: Physics Handle"), *GetOwner()->GetName());
+	}
 }
 
 // Called every frame
@@ -45,10 +47,5 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	/// Line trace (Ray-cast) to reach distance
 	FHitResult Hit;
 	GetWorld()->LineTraceSingleByObjectType(OUT Hit, PLocation, LineTraceEnd, FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParams);
-	
-	/// Check what we hit
-	if (Hit.GetActor()) {
-		UE_LOG(LogTemp, Warning, TEXT("Ray Cast hitting: %s"), *Hit.GetActor()->GetName())
-	}
 }
 
