@@ -40,4 +40,6 @@ private:
 	// Ray-Cast and Grab object in reach
 	void Grab();
 
+	void Release();
+
 };
