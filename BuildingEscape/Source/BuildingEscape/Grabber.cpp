@@ -27,7 +27,20 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	/// if the physics handle is attached
+	if (PhysicsHandle->GrabbedComponent) {
+		/// OUT Params
+		FVector PLocation;
+		FRotator PRotation;
+
+		/// Grab the player's viewpoint
+		GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT PLocation, OUT PRotation);
+
+		/// Calculate a LineTraceEnd
+		FVector LineTraceEnd = PLocation + PRotation.Vector() * Reach;
+		
 		/// move the object that we are holding
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+	}
 
 	return;
 }
@@ -36,12 +49,14 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 void UGrabber::Initialize() {
 	FindPhysicsHandler();
 	SetupInputComponent();
+
+	return;
 }
 
 // Find the Physics Handler attached to this owner
 void UGrabber::FindPhysicsHandler() {
-	PhysicsHandler = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandler == nullptr) { UE_LOG(LogTemp, Error, TEXT("%s is missing component: Physics Handle"), *GetOwner()->GetName()); }
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (PhysicsHandle == nullptr) { UE_LOG(LogTemp, Error, TEXT("%s is missing component: Physics Handle"), *GetOwner()->GetName()); }
 
 	return;
 }
@@ -62,12 +77,17 @@ void UGrabber::SetupInputComponent() {
 
 	return;
 }
+
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
 	
-	GetFirstPhysicsBodyInReach();
-
-	/// TODO: attach physics handle
+	auto HitResult = GetFirstPhysicsBodyInReach();
+	auto ActorHit = HitResult.GetActor();
+	
+	if (ActorHit) {
+		auto TargetComponent = HitResult.GetComponent();
+		PhysicsHandle->GrabComponent(TargetComponent, NAME_None, TargetComponent->GetOwner()->GetActorLocation(), true);
+	}
 
 	return;
 }
@@ -75,8 +95,8 @@ void UGrabber::Grab() {
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
 	
-	/// TODO: release physics handle
-
+	PhysicsHandle->ReleaseComponent();
+	
 	return;
 }
 

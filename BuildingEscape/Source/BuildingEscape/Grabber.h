@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "Components/ActorComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
@@ -37,7 +38,7 @@ protected:
 private:
 	float Reach = 100.f;
 
-	UPhysicsHandleComponent* PhysicsHandler = nullptr;
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
 	UInputComponent* Input = nullptr;
 
