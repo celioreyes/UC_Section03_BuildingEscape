@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "Engine/TriggerVolume.h"
-
 #include "OpenDoor.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -22,6 +22,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float OpenAngle = -75.f;
 
+	UPROPERTY(EditAnywhere)
+	float MassToOpen = 50.f;
+	
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 	

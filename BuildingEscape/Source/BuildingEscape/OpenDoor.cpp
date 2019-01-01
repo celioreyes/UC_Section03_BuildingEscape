@@ -29,6 +29,7 @@ void UOpenDoor::BeginPlay() {
 void UOpenDoor::OpenDoor() {
 	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f)); // Open Door
 
+	TimeLastOpen = GetWorld()->GetTimeSeconds();
 	return;
 }
 
@@ -42,28 +43,29 @@ void UOpenDoor::CloseDoor() {
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (CalculateTotalMassOnPlate() > 50.f) { // If TargetActor is in volume
-		OpenDoor();
-		TimeLastOpen = GetWorld()->GetTimeSeconds();
-	}
+	if (CalculateTotalMassOnPlate() > MassToOpen) { OpenDoor(); }
 
-	if ((GetWorld()->GetTimeSeconds() - TimeLastOpen) > CloseDelay) {
-		// Close
-		CloseDoor();
-	}
+	if ((GetWorld()->GetTimeSeconds() - TimeLastOpen) > CloseDelay) { CloseDoor(); }
 
 	return;
 }
 
 float UOpenDoor::CalculateTotalMassOnPlate() const {
-	float TotalMass = 40.f;
-	
+	float TotalMass = 0.f;
 
 	/// Find all overlapping actors
 	TArray<AActor*> Actors;
 	PressurePlate->GetOverlappingActors(OUT Actors);
 	
 	/// Loop and sum all masses
+	for (const auto& Actor : Actors) {
+		UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate"), *Actor->GetName());
+
+		/// Sum the total mass of actors on the pressure plate
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("total mass on pressure plate is %f"), TotalMass);
 
 	return TotalMass;
 }
