@@ -25,14 +25,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 	
-	UPROPERTY(VisibleAnywhere)
-	AActor* TargetActor;
-
 	UPROPERTY(EditAnywhere)
 	float CloseDelay = 0.5f;
 
 	// Won't be visible in Unreal Editor
 	AActor* Owner;
+	
 	float TimeLastOpen;
 protected:
 	// Called when the game starts
@@ -44,5 +42,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	// Returns total mass in kg
+	float CalculateTotalMassOnPlate() const;
 };
