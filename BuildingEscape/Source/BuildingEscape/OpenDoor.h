@@ -26,13 +26,13 @@ private:
 	float MassToOpen = 50.f;
 	
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate;
+	ATriggerVolume* PressurePlate = nullptr;
 	
 	UPROPERTY(EditAnywhere)
 	float CloseDelay = 0.5f;
 
 	// Won't be visible in Unreal Editor
-	AActor* Owner;
+	AActor* Owner = nullptr;
 	
 	float TimeLastOpen;
 protected:

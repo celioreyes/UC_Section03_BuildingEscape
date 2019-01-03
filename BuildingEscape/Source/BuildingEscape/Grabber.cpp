@@ -70,6 +70,8 @@ void UGrabber::SetupInputComponent() {
 }
 
 void UGrabber::Grab() {
+	if (PhysicsHandle == nullptr) { return; } /// Do nothing if there's no Physics Handle
+
 	auto HitResult = GetFirstPhysicsBodyInReach();
 	auto ActorHit = HitResult.GetActor();
 	
@@ -82,6 +84,8 @@ void UGrabber::Grab() {
 }
 
 void UGrabber::Release() {
+	if (PhysicsHandle == nullptr) { return; } /// Do nothing if there's no Physics Handle
+
 	PhysicsHandle->ReleaseComponent();
 	
 	return;

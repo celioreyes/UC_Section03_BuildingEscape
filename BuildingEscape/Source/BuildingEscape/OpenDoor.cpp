@@ -12,8 +12,6 @@ UOpenDoor::UOpenDoor() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -21,20 +19,22 @@ UOpenDoor::UOpenDoor() {
 void UOpenDoor::BeginPlay() {
 	Super::BeginPlay();
 	
-	Owner = GetOwner(); // Find owning actor aka the door
-
+	Owner = GetOwner(); /// Find owning actor aka the door
+	
+	/// make sure that a trigger volume is set on the door
+	if (PressurePlate == nullptr) { UE_LOG(LogTemp, Error, TEXT("%s is missing pressure plate (Trigger Volume)"), *Owner->GetName()); }
 	return;
 }
 
 void UOpenDoor::OpenDoor() {
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f)); // Open Door
+	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f)); /// Open Door
 
 	TimeLastOpen = GetWorld()->GetTimeSeconds();
 	return;
 }
 
 void UOpenDoor::CloseDoor() {
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f)); // Open Door
+	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f)); /// Close Door
 
 	return;
 }
@@ -53,6 +53,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 float UOpenDoor::CalculateTotalMassOnPlate() const {
 	float TotalMass = 0.f;
 
+	if (PressurePlate == nullptr) { return TotalMass; } /// No Trigger Volume? Just return
+
 	/// Find all overlapping actors
 	TArray<AActor*> Actors;
 	PressurePlate->GetOverlappingActors(OUT Actors);
@@ -64,8 +66,6 @@ float UOpenDoor::CalculateTotalMassOnPlate() const {
 		/// Sum the total mass of actors on the pressure plate
 		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
 	}
-	
-	UE_LOG(LogTemp, Warning, TEXT("total mass on pressure plate is %f"), TotalMass);
 
 	return TotalMass;
 }
