@@ -26,26 +26,16 @@ void UOpenDoor::BeginPlay() {
 	return;
 }
 
-void UOpenDoor::OpenDoor() {
-	//Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f)); /// Open Door
-	TimeLastOpen = GetWorld()->GetTimeSeconds();
-	OnOpenRequest.Broadcast();
-	return;
-}
-
-void UOpenDoor::CloseDoor() {
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f)); /// Close Door
-
-	return;
-}
 
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (CalculateTotalMassOnPlate() > MassToOpen) { OpenDoor(); }
-
-	if ((GetWorld()->GetTimeSeconds() - TimeLastOpen) > CloseDelay) { CloseDoor(); }
+	if (CalculateTotalMassOnPlate() > MassToOpen) { 
+		OnOpen.Broadcast();
+	} else {
+		OnClose.Broadcast();
+	}
 
 	return;
 }
