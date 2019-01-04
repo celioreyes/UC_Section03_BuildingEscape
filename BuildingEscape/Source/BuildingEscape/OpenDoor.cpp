@@ -31,7 +31,7 @@ void UOpenDoor::BeginPlay() {
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (CalculateTotalMassOnPlate() > MassToOpen) { 
+	if (CalculateTotalMassOnPlate() >= MassToOpen) { 
 		OnOpen.Broadcast();
 	} else {
 		OnClose.Broadcast();
